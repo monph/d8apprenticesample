@@ -1,0 +1,31 @@
+@mixin admin-button{
+  color: #555;
+  border-color: #ccc;
+  background: #f7f7f7;
+  box-shadow: 0 1px 0 #ccc;
+  border-radius: 3px;
+  padding: 4px 8px;
+  &:hover{
+    background: #fafafa;
+    border-color: #999;
+    color: #23282d;
+  }
+}
+
+@mixin form-actions{
+  clear: none;
+  display: inline-block;
+}
+
+@mixin cd-tab-button {
+  background: #f7f7f7;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  padding: 4px 8px;
+  &:hover {
+    border-color: #008EC2;
+    background: #00a0d2;
+    color: #fff;
+  }
+}

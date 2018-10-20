@@ -1,0 +1,250 @@
+.creditdue {
+  h1.page-title {
+    margin-bottom: 12px;
+    em{
+      font-style: normal;
+      font-weight: normal;
+    }
+  }
+
+  .node-form {
+    .fieldset:not(.fieldgroup) > legend, fieldset:not(.fieldgroup) > legend {
+      position: relative;
+      font-size: 1.2em;
+      top: 14px;
+    }
+    .layout-region-node-footer {
+      display: none;
+    }
+    .form-wrapper {
+      margin-bottom: 18px;
+      &.field--name-title, .form-wrapper {
+        margin-bottom: 0;
+      }
+    }
+
+    input.form-autocomplete, input.form-text, input.form-tel, input.form-email, input.form-url, input.form-search, input.form-number, input.form-color, input.form-file, input.form-date, input.form-time, textarea.form-textarea {
+      border: 1px solid #e5e5e5;
+    }
+
+    ul.tips li {
+      margin: 0 0 0 1em;
+      line-height: 16px;
+    }
+
+    .field--name-title {
+      label{
+        display: none;
+      }
+      .form-type-textfield {
+        margin: 0;
+      }
+    }
+
+    .field--name-title {
+      input.form-text {
+        height: 1.7em;
+        font-size: 1.7em;
+        line-height: 100%;
+      }
+    }
+
+    .current-url-alias{
+      text-transform: lowercase;
+      font-weight: normal;
+      letter-spacing: 0;
+    }
+
+    .cd-tab {
+      margin-left: 6px;
+      @include cd-tab-button;
+    }
+    .path-form {
+      transition: all 0.4s ease;
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0 0 24px;
+
+      legend {
+        position: relative;
+        color: #666;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      .fieldset-language {
+        letter-spacing: 0;
+      }
+
+      .fieldset-wrapper {
+        display: none;
+        padding-top: 20px;
+      }
+
+      &.opened-alias-fieldset {
+        margin: 8px 0;
+        padding: 12px;
+        border: 1px solid #b8b8b8;
+        background: #FFF;
+        legend{
+          position: absolute;
+
+        }
+      }
+    }
+
+    #edit-meta {
+      padding: 0;
+      background: #FFF;
+      .js-form-item, .field--name-created, .save-cancel {
+        padding-left: 8px;
+        padding-right: 8px;
+        &.form-type-date {
+          padding-left: 0;
+        }
+      }
+      >.form-item, >.form-wrapper {
+        margin-top: 6px;
+        margin-bottom: 8px;
+      }
+      .form-item-status-value {
+        margin: 0;
+      }
+      #edit-meta-changed {
+        font-style: normal;
+        font-weight: 700;
+        label {
+          font-weight: normal;
+        }
+      }
+      #edit-meta-actions{
+        background: #f5f5f5;
+        margin:0;
+        padding: 10px;
+        #edit-meta-actions-delete {
+          float: left;
+        }
+        #edit-meta-actions-submit{
+          float: right;
+        }
+      }
+    }
+
+    #edit-meta-preview {
+      margin: 3px 8px;
+    }
+
+    .layout-region-node-secondary {
+      .entity-meta {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        .form-item-meta-published {
+          padding-top: 4px;
+          padding-bottom: 9px;
+        }
+      }
+      details {
+        margin-top: 20px;
+        background: #FFF;
+        border: 1px solid #e5e5e5;
+      }
+      details summary, #edit-meta-published {
+        border-bottom: 1px solid #eee;
+      }
+      .entity-meta__header {
+        border: 1px solid #e5e5e5;
+      }
+    }
+
+    .save-cancel {
+      display: none;
+      .save-cancel-ok {
+        margin-right: 8px;
+      }
+    }
+
+    .is-expanded.expand-to-edit  .save-cancel {
+      display: block;
+      margin: 8px 0 24px;
+    }
+
+    .expand-to-edit {
+      input, .save-cancel, .container-inline, .field--type-string-long {
+        display: none;
+      }
+      label, .label {
+        font-weight: normal;
+      }
+
+      .edit-expand-field {
+        text-decoration: underline;
+      }
+      &.is-expanded {
+        .edit-expand-field{
+          display: none;
+        }
+        input,  .container-inline, .field--type-string-long {
+          display: block;
+        }
+      }
+    }
+
+    input#edit-uid-0-target-id {
+      font-size: 13px;
+    }
+
+    .field--name-status {
+      display: inline-block;
+      position: relative;
+      padding-right: 10px;
+      top: -7px;
+      input {
+        position: absolute;
+        right: -5px;
+        top: 3px;
+
+      }
+    }
+
+    .layout-region-node-main {
+      .form-wrapper:not(.no-white-bg) {
+        background: #FFF;
+        padding: 0 12px 8px 12px;
+        border: 1px solid #e5e5e5;
+        .form-wrapper {
+          padding: 0;
+          border: none;
+          fieldset.form-item{
+            padding: 12px 4px;
+            background: #ededed;
+            background-origin: content-box;
+            .fieldset-wrapper, .form-wrapper {
+              background: #ededed;
+            }
+          }
+        }
+        label{
+          display:block;
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
+        &.field-group-details {
+          background: #f1f5f8;
+          .form-wrapper {
+            background: #f1f5f8;
+          }
+        }
+      }
+    }
+  }
+
+  .path-node {
+    @media only screen and (max-width: 782px) {
+      h1.page-title {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

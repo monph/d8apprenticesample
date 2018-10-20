@@ -1,0 +1,17 @@
+name: Fortytwo - Administration toolbar
+type: module
+description: Fortytwo admin in the toolbar
+package: Administration
+dependencies:
+  - admin_toolbar
+  - admin_toolbar_tools
+
+# version: '8.x-1.0'
+# core: '8.x'
+# project: 'fortytwo_admin_toolbar'
+
+# Information added by Drupal.org packaging script on 2017-09-11
+version: '8.x-1.6'
+core: '8.x'
+project: 'fortytwo_admin_toolbar'
+datestamp: 1505143446

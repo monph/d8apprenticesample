@@ -1,0 +1,12 @@
+.progress {
+  .progress__track {
+    background-color: $pinkish-grey;
+    border: 0;
+    height: 3px;
+
+    .progress__bar {
+      background-color: $azure;
+      height: 3px;
+    }
+  }
+}

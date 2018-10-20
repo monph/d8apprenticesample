@@ -1,0 +1,235 @@
+$open-color: darken($beeblebrox1, 20%);
+
+body {
+  &.ft-profile-beeblebrox {
+    button,
+    input[type='submit'],
+    input[type='button'],
+    form label[type='submit'].select.prettify,
+    form label[type='button'].select.prettify,
+    a.button-action {
+      background-color: $beeblebrox1;
+      color: $white;
+
+      &:hover {
+        background-color: darken($beeblebrox1, 20%);
+        color: $white;
+      }
+    }
+
+    button.link {
+      background-color: transparent;
+      color: inherit;
+    }
+
+    // Actions buttons
+    .form-actions {
+      .button {
+        background-color: $beeblebrox1;
+
+        // Delete button
+        &.button--danger {
+          background: $tomato;
+          border: 1px solid $white;
+          color: $white;
+
+          &:hover {
+            background: $white;
+            border-color: $tomato;
+            color: $tomato;
+          }
+        }
+      }
+    }
+
+    form {
+      // RADIO BUTTONS AND CHECKBOXES
+      input[type='checkbox'] {
+        background-color: $white;
+
+        &:checked {
+          background-color: $azure;
+          border-color: $azure;
+
+          &:before {
+            color: $white;
+          }
+        }
+      }
+
+      input[type='radio'] {
+        background: $white;
+
+        &:checked {
+          background-color: $azure;
+          border-color: $azure;
+
+          &:before {
+            background-color: $white;
+          }
+        }
+      }
+
+      input[type='checkbox'][disabled],
+      input[type='radio'][disabled] {
+        border-color: $pinkish-grey;
+
+        &:checked {
+          background-color: $pinkish-grey;
+
+          &:before {
+            color: $dark-blue-grey;
+          }
+        }
+      }
+
+      .password-strength {
+        .password-strength__meter {
+          background-color: $pinkish-grey;
+
+          .password-strength__indicator {
+            &.is-weak {
+              background-color: $message-error;
+            }
+
+            &.is-fair {
+              background-color: $message-warning;
+            }
+
+            &.is-good {
+              background-color: $azure;
+            }
+
+            &.is-strong {
+              background-color: $message-status;
+            }
+          }
+        }
+      }
+    }
+
+    .views-form {
+      input[type='submit'] {
+        @include button($white, $beeblebrox1, $beeblebrox1, $white, $beeblebrox1);
+      }
+    }
+
+    .ui-autocomplete {
+      .ui-menu-item {
+        &.ui-state-focus {
+          a {
+            color: $peachy-pink;
+          }
+        }
+      }
+    }
+
+    .views-admin {
+      .views-displays {
+        .views-display-top {
+          .tabs.secondary {
+            > li {
+              a {
+                @include button($white, $beeblebrox1, $beeblebrox1, $white, $beeblebrox1);
+
+                &:visited {
+                  color: $beeblebrox1;
+                }
+
+                &:hover {
+                  color: $white;
+                }
+              }
+
+              &.is-active a {
+                @include button($beeblebrox1, $white, $white, $beeblebrox1, $beeblebrox1);
+              }
+
+              &.add {
+                &.open {
+                  a {
+                    background-color: $open-color;
+                    border-color: $open-color;
+                    color: $white;
+                  }
+
+                  .action-list {
+                    background-color: $open-color;
+                    border-top: 1px solid $white;
+
+                    li {
+                      border-bottom: 1px solid $white;
+
+                      input[type='submit'] {
+                        background-color: $open-color;
+                        color: $white;
+
+                        &:hover {
+                          background-color: $beeblebrox1;
+                          color: $white;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    a {
+      color: $beeblebrox1;
+
+      &:hover {
+        color: $beeblebrox2;
+      }
+    }
+
+    table.permissions {
+      input[type='checkbox'],
+      label[type='checkbox'].select.prettify,
+      label[type='checkbox'].select.prettify:checked,
+      input[type='checkbox']:checked {
+        background-color: transparent;
+      }
+
+      input[type='checkbox']:checked {
+        &:before {
+          color: $beeblebrox1;
+        }
+      }
+    }
+
+    .messages__item {
+      a {
+        color: $white;
+      }
+    }
+
+    .dropbutton-wrapper .dropbutton-widget {
+      .dropbutton-toggle {
+        button {
+          background-color: $beeblebrox1;
+
+          &:hover {
+            background-color: $open-color;
+          }
+        }
+      }
+
+      .dropbutton .dropbutton-action {
+        > input,
+        > a,
+        > button {
+          background-color: $beeblebrox1;
+
+          &:hover {
+            background-color: $open-color;
+          }
+        }
+      }
+    }
+  }
+}

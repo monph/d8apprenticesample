@@ -1,0 +1,198 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the credit_due theme.
+ */
+
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+
+require_once 'inc/forms.inc';
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function credit_due_preprocess_html(array &$variables) {
+  $variables['attributes']['class'][] = 'creditdue';
+}
+
+/**
+ * Implements hook_preprocess_page() for page.html.twig.
+ */
+function credit_due_preprocess_page(array &$variables) {
+  $variables['page']['content']['adminmenu'] = _credit_due_sidenav_menu();
+}
+
+/**
+ * Generate admin sidebar if one is not cached. Ideally this
+ * would be in a dedicated block, but that is not currently
+ * possible in a theme.
+ */
+function _credit_due_sidenav_menu() {
+
+  $menu_link_service = \Drupal::getContainer()->get('plugin.manager.menu.link');
+  $menu_links = $menu_link_service->loadLinksByRoute('system.admin', [], 'admin');
+  $data = [];
+  if (!empty($menu_links)) {
+    $root_menu_item = reset($menu_links);
+    $menu_tree_service = \Drupal::service('menu.link_tree');
+    $menu_parameters = $menu_tree_service->getCurrentRouteMenuTreeParameters('admin');
+    $other_menu_parameters = new MenuTreeParameters();
+    $menu_parameters->setMaxDepth(2);
+    $menu_parameters->setMinDepth(2);
+    $menu_parameters->setRoot($root_menu_item->getPluginId());
+    $menu_parameters->excludeRoot();
+
+    $other_menu_parameters->setMaxDepth(2);
+    $other_menu_parameters->setMinDepth(2);
+    $other_menu_parameters->setRoot($root_menu_item->getPluginId());
+    $other_menu_parameters->excludeRoot();
+
+    $menu_parameters->expandedParents = [];
+    $tree = $menu_tree_service->load('admin', $menu_parameters);
+    $manipulators = [
+      ['callable' => 'menu.default_tree_manipulators:checkNodeAccess'],
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ];
+    $tree = $menu_tree_service->transform($tree, $manipulators);
+    $leftnav_render_array = $menu_tree_service->build($tree);
+    $sidebar_cts = credit_due_content_types_for_sidebar();
+
+    foreach ($sidebar_cts as $ct) {
+      $leftnav_render_array['#items']['system.admin_content.' . $ct->id()] = [
+        'attributes' => new Attribute(),
+        'title' => $ct->label(),
+        'below' => [],
+        'url' => Url::fromRoute('system.admin_content', [], [
+          'query' => [
+            'type' => $ct->id(),
+          ],
+        ]),
+
+      ];
+    }
+    $items = $leftnav_render_array['#items'];
+
+    // Sort so content is first, and content types immediately follow.
+    uksort($items, function ($a, $b) {
+      if (strpos($a, 'system.admin_content') !== FALSE && strpos($b, 'system.admin_content') !== FALSE) {
+        if ($a === 'system.admin_content') {
+          return 0;
+        }
+        return 1;
+      }
+      elseif (strpos($a, 'system.admin_content') !== FALSE && strpos($b, 'system.admin_content') === FALSE) {
+        return -1;
+      }elseif (strpos($a, 'system.admin_content') === FALSE && strpos($b, 'system.admin_content') === FALSE) {
+        return 0;
+      }
+      return 1;
+    });
+    $leftnav_render_array['#items'] = $items;
+
+    $data = $leftnav_render_array;
+    $data['#prefix'] = '<div id="creditdue-admin-nav">';
+    $data['#suffix'] = '</div>';
+  }
+
+  return $data;
+}
+
+/**
+ * Returns an array of content types that are configured to appear in sidebar.
+ */
+function credit_due_content_types_for_sidebar() {
+  $contentTypes = \Drupal::service('entity.manager')->getStorage('node_type')->loadMultiple();
+  $contentTypesList = [];
+  foreach ($contentTypes as $contentType) {
+    $ct_theme_settings = $contentType->getThirdPartySetting('credit_due', 'credit_due_ct_config');
+    if (isset($ct_theme_settings['show_left_sidebar']) && $ct_theme_settings['show_left_sidebar'] == 0) {
+      continue;
+    }
+    $contentTypesList[$contentType->id()] = $contentType;
+  }
+  return array_reverse($contentTypesList);
+}
+
+/**
+ * Implements hook_preprocess_menu() for menu.html.twig.
+ */
+function credit_due_preprocess_menu(&$variables, $hook) {
+  if ($hook == 'menu__admin') {
+    foreach ($variables['items'] as &$item) {
+      if (isset($item['title']) && $item['title'] == "Content") {
+        $item['title'] = t("All Content");
+      }
+    }
+  }
+}
+
+/**
+ * Implements theme_preprocess_page_title().
+ */
+function credit_due_preprocess_page_title(&$variables) {
+  // Remove redundant title from admin pages.
+  if (\Drupal::routeMatch()->getParameter('node')) {
+    $title = $variables['title'];
+    $untranslated_string = $title->getUntranslatedString();
+    $arguments = $title->getArguments();
+    unset($arguments['@title']);
+    $untranslated_string = str_replace('@title', '', $untranslated_string);
+    $variables['title'] = t($untranslated_string, $arguments);
+  }
+}
+
+/**
+ * Implements template_preprocess_toolbar().
+ */
+function credit_due_preprocess_toolbar(&$variables) {
+  foreach ($variables['tabs'] as $k => &$v) {
+    $v['attributes']->addClass($k . '-tab');
+  }
+}
+/**
+ * Implements template_preprocess_links__dropbutton().
+ */
+function credit_due_preprocess_links__dropbutton(&$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  $views_table_routes = ['entity.user.collection', 'system.admin_content'];
+  if (in_array($route_name, $views_table_routes)) {
+    $variables['attributes']['class'] = ['inline-list', 'content-actions'];
+  }
+}
+
+/**
+ * Implements template_preprocess_pager().
+ */
+function credit_due_preprocess_pager(&$variables) {
+  if (isset($variables['items']['first']['text'])) {
+    $variables['items']['first']['text'] = '«';
+  }
+  elseif (isset($variables['items']['pages']) && count($variables['items']['pages']) > 1) {
+    $variables['items']['first_empty']['text'] = '«';
+  }
+
+  if (isset($variables['items']['previous']['text'])) {
+    $variables['items']['previous']['text'] = '‹';
+  }
+  elseif (isset($variables['items']['pages']) && count($variables['items']['pages']) > 1) {
+    $variables['items']['previous_empty']['text'] = '‹';
+  }
+
+  if (isset($variables['items']['next']['text'])) {
+    $variables['items']['next']['text'] = '›';
+  }
+  elseif (isset($variables['items']['pages']) && count($variables['items']['pages']) > 1) {
+    $variables['items']['next_empty']['text'] = '›';
+  }
+
+  if (isset($variables['items']['last']['text'])) {
+    $variables['items']['last']['text'] = '»';
+  }
+  elseif (isset($variables['items']['pages']) && count($variables['items']['pages']) > 1) {
+    $variables['items']['last_empty']['text'] = '»';
+  }
+}

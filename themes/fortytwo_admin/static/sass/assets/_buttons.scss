@@ -1,0 +1,87 @@
+button,
+input[type='submit'],
+input[type='button'],
+a.button-action {
+  @include button;
+}
+
+a.button:hover {
+  color: $white;
+}
+
+a.button--small {
+  @include button-small-grey;
+}
+
+label.fileinput {
+  div span a.button {
+    @include button-small-grey;
+    white-space: nowrap;
+  }
+}
+
+// Actions buttons
+.form-actions {
+  .dropbutton-wrapper,
+  .button {
+    margin-right: 20px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .dropbutton-wrapper {
+    .dropbutton-action {
+      input {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+  }
+
+  .button {
+    @include button;
+
+    &#edit-actions-cancel {
+      @include button($white, $brownish-grey, $brownish-grey, $white, $brownish-grey);
+    }
+
+    // Preview button
+    &#edit-preview {
+      @include button($white, $brownish-grey, $brownish-grey, $white, $brownish-grey);
+    }
+
+    // Delete button
+    &.button--danger {
+      background: $tomato;
+      border: 1px solid $tomato;
+      color: $white;
+
+      &:hover {
+        background: $white;
+        color: $tomato;
+      }
+    }
+  }
+}
+
+button.link {
+  background: none;
+  color: inherit;
+  display: inline;
+  padding: 0;
+}
+
+a.button.button-action {
+  margin-bottom: 20px;
+}
+
+// RSS Feed Icon
+a.feed-icon {
+  font-size: 0;
+
+  &:before {
+    @include icomoon('basic_rss', 'linea');
+  }
+}

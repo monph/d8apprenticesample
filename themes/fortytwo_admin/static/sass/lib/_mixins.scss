@@ -1,0 +1,176 @@
+@mixin button($bg-color: $azure, $hover-bg-color: 'darken', $text-color: $white, $hover-text-color: $white, $border: false) {
+  background-color: $bg-color;
+  border: 0;
+  border-radius: 60px;
+  color: $text-color;
+  cursor: pointer;
+  display: inline-block;
+  font-family: $default-font;
+  font-weight: 500;
+  line-height: pxtoem($default-line-height);
+  padding: pxtoem(8px, 30px, 8px, 30px);
+  text-decoration: none;
+  transition: all 0.4s ease-in-out;
+  vertical-align: baseline;
+
+  @if $border {
+    border: 1px solid $border;
+  }
+
+  &:hover {
+    color: $hover-text-color;
+    text-decoration: none;
+
+    @if $hover-bg-color == 'darken' {
+      background-color: darken($bg-color, 20%);
+    }  @else {
+      background-color: $hover-bg-color;
+    }
+  }
+
+  &:visited {
+    color: $white;
+  }
+
+  &[disabled],
+  &:disabled,
+  &.disabled {
+    &,
+    &:hover {
+      $shadow-color: rgba(0, 0, 0, 0.3);
+      background-color: lighten($silver, 15%);
+      //box-shadow: inset 0 pxtoem(-1px) $shadow-color;
+      color: darken($silver, 15%);
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin button-small {
+  @include button;
+
+  border-radius: 60px;
+  font-size: 14px;
+  padding: pxtoem(0, 8px);
+}
+
+@mixin button-small-grey {
+  @include button($white, $brownish-grey, $brownish-grey, $white, $brownish-grey);
+  font-size: 14px;
+  padding: 0 8px;
+}
+
+%clearfix {
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+%elementfocus {
+  outline: none;
+
+  &.hide-outline {
+    outline: none;
+  }
+}
+
+@mixin icomoon($name, $family: 'icomoon') {
+  @include fonticon;
+
+  @if $family == 'linea' {
+    font-family: $family;
+    font-size: 16px;
+
+    @each $icon in $linea {
+      $itemname: nth($icon, 1);
+      $char: nth($icon, 2);
+
+      @if $name == $itemname {
+        content: $char;
+      }
+    }
+  } @else {
+    @each $icon in $fonticons {
+      $itemname: nth($icon, 1);
+      $char: nth($icon, 2);
+
+      @if $name == $itemname {
+        content: $char;
+      }
+    }
+  }
+}
+
+//This mixin replaces @extend %fonticon from the 42-theme because SASS doesn't
+//allow extends in media queries (anymore). See http://thesassway.com/intermediate/understanding-placeholder-selectors
+//for more solutions
+@mixin fonticon {
+  font-family: 'icomoon';
+  font-size: inherit;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 1;
+  speak: none;
+  text-transform: none;
+}
+
+@mixin flex-order($number) {
+  order: #{$number};
+}
+
+@mixin flex-align($align) {
+  @if $align == 'start' or $align == 'end' {
+    align-items: flex-#{$align};
+  } @else {
+    align-items: #{$align};
+  }
+}
+
+@mixin flex-flow($direction: none, $wrap: none) {
+  @if $wrap != none {
+    flex-wrap: #{$wrap};
+  }
+
+  @if $direction != none {
+    flex-direction: #{$direction};
+  }
+}
+
+@mixin flex-grow($value) {
+  flex-grow: #{$value};
+}
+
+@mixin flex-shrink($value) {
+  flex-shrink: #{$value};
+}
+
+@mixin flex-child($value) {
+  flex: #{$value};
+}
+
+@mixin flex($wrap: none, $justify: none, $align: none, $direction: none, $inline: none) {
+  @if $inline != none {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+
+  @if $direction != none {
+    flex-direction: #{$direction};
+  }
+
+  @if $wrap != none {
+    flex-wrap: #{$wrap};
+  }
+
+  @if $align != none {
+    align-items: #{$align};
+  }
+
+  @if $justify != none {
+    justify-content: #{$justify};
+  }
+}

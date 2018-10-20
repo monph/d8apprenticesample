@@ -1,0 +1,120 @@
+.js .field--widget-entity-reference-paragraphs {
+  .paragraph-type-top {
+    @include flex-align('center');
+  }
+
+  .form-item {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  a.tabledrag-handle .handle {
+    margin: 0 10px 10px;
+  }
+
+  .image-widget {
+    @include flex('nowrap');
+
+    .image-widget-data {
+      margin-left: 0;
+    }
+
+    .image-preview {
+      margin-left: 0;
+
+      img {
+        height: auto;
+        margin: 13px 10px 0 0;
+        width: 75px;
+      }
+    }
+  }
+
+  tr {
+    td {
+      padding: 10px;
+
+      &.field-multiple-drag {
+        vertical-align: middle;
+
+        .handle {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .tabledrag-changed {
+    left: 10px;
+    position: absolute;
+    top: 10px;
+  }
+
+  .paragraphs-subform {
+    margin-top: 10px;
+
+    tr.draggable {
+      &:nth-child(odd) {
+        background-color: $white;
+      }
+    }
+  }
+
+  details {
+    .draggable {
+      &:only-child {
+        a.tabledrag-handle {
+          display: none;
+        }
+      }
+
+      a.tabledrag-handle {
+        float: left;
+
+        .handle {
+          margin: 0 10px 10px 0;
+        }
+      }
+
+      td {
+        padding: 15px 10px 20px;
+        vertical-align: bottom;
+      }
+    }
+
+    &.form-wrapper .details-wrapper {
+      margin: 0;
+      padding: 10px;
+
+      .form-wrapper {
+        position: relative;
+      }
+
+      .ajax-progress-throbber {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .entities-list .item-container > input {
+        display: inline-block;
+      }
+
+      .js-form-type-managed-file {
+        border-top: 3px solid $pale-grey;
+        padding-left: 10px;
+        padding-top: 15px;
+      }
+
+      .tabledrag-toggle-weight-wrapper {
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+.js .draggable .paragraphs-collapsed-description:after,
+.js .draggable:hover .paragraphs-collapsed-description:after {
+  display: none;
+}
