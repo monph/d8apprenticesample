@@ -1,0 +1,22 @@
+uuid: f7af43ca-af39-43d8-be5a-d5b2937591b6
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - drupalexp_lite
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: drupalexp_lite_messages
+theme: drupalexp_lite
+region: content
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

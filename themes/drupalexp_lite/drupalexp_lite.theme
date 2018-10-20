@@ -1,0 +1,266 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the Drupalexp theme.
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Render\Markup;
+use Drupal\Component\Utility\Html;
+use Drupal\drupalexp_lite\DrupalExp;
+use Drupal\drupalexp_lite\Layout;
+
+/**
+ * Implements hook_theme
+ */
+function drupalexp_lite_theme($existing, $type, $theme, $path) {
+  return [
+    'section' => [
+      'template' => 'section',
+      'pattern' => 'section__',
+      'preprocess functions' => [
+        'template_preprocess',
+        'template_preprocess_section',
+      ],
+      'process functions' => [
+        'template_process',
+        'template_process_section',
+      ],
+       
+      'variables' => [
+        'attributes' => [],
+        'content' => '',
+        'section' => '',
+      ]
+    ],
+  ];
+}
+
+function drupalexp_lite_page_attachments_alter(array &$attachments) {
+  if(isset($attachments['#attached']['drupalSettings']['colorbox'])){
+    $attachments['#attached']['drupalSettings']['colorbox']['returnFocus'] = false;
+  }
+}
+
+/**
+ * Implement hook_preprocess_html
+ */
+function drupalexp_lite_preprocess_html(&$html){
+  $theme = DrupalExp::get();
+  if($layout = $theme->getSetting('drupalexp_lite_layout','')){
+    $html['attributes']['class'][] = $layout;
+  }
+  if($custom_class = $theme->getSetting('drupalexp_lite_custom_html_class','')){
+    $html['attributes']['class'][] = $custom_class;
+  }
+  $html['page_loading'] = $theme->getSetting('features.page_loading',0);
+  $html['goto_top'] = $theme->getSetting('features.goto_top',0);
+  if($node = \Drupal::routeMatch()->getParameter('node')){
+    $html['body_class'] = 'page-node-' . $node->id();
+  }
+}
+
+/**
+ * Implement hook_preprocess_page 
+ */
+function drupalexp_lite_preprocess_page(&$page){
+  $theme = DrupalExp::get($page);
+  $page['#attached']['library'][] = 'drupalexp_lite/base';
+  $page['#attached']['library'][] = 'drupalexp_lite/bootstrap';
+  $page['#attached']['library'][] = 'drupalexp_lite/font-awesome';
+  $page_content = $theme->render();
+	if(empty($page_content)){
+		$page_content = $page['page']['content'];
+	}
+  $page['page']['page_content']  = $page_content;
+  $page['attributes']['class'][] = 'dexp-body-inner';
+  $page['attributes']['class'][] = \Drupal\Component\Utility\Html::getClass('layout-' . $theme->getActiveLayout()->key);
+}
+
+function template_preprocess_section(&$variables){
+  $section = $variables['section'];
+  $variables['attributes_container'] = new \Drupal\Core\Template\Attribute();
+  $variables['attributes_row'] = new \Drupal\Core\Template\Attribute();
+  if($section->sticky){
+    $variables['attributes']['class'][] = 'dexp-sticky';
+    //$variables['#attached']['library'][] = 'drupalexp/sticky';
+    if(isset($section->sticky_disable_mobile) && $section->sticky_disable_mobile){
+      $variables['attributes']['class'][] = 'unsticky-mobile';
+    }
+  }
+  $variables['attributes']['id'] = Html::getUniqueId('section-'.$section->key);
+  $variables['attributes']['class'][] = 'dexp-section';
+  if($section->custom_class){
+    $variables['attributes']['class'][] = $section->custom_class;
+  }
+  $variables['container_class'] = $section->fullwidth == 'no' ? 'container' : 'dexp-container';
+  if (isset($section->backgroundcolor) && $section->backgroundcolor) {
+    $variables['attributes']['style'] = "background-color:{$section->backgroundcolor}";
+  }
+  if (isset($section->colpadding) && $section->colpadding != '' && $section->colpadding != 15 && $section->colpadding >= 0) {
+    $variables['attributes']['data-padding'] = $section->colpadding;
+    $variables['attributes']['class'][] = 'custompadding';
+  }
+  if($section->hdesktop){
+    $variables['attributes']['class'][] = 'hidden-md hidden-lg';
+  }
+  if($section->htablet){
+    $variables['attributes']['class'][] = 'hidden-sm';
+  }
+  if($section->hphone){
+    $variables['attributes']['class'][] = 'hidden-xs';
+  }
+  if($section->vdesktop){
+    $variables['attributes']['class'][] = 'visible-md visible-lg';
+  }
+  if($section->vtablet){
+    $variables['attributes']['class'][] = 'visible-sm';
+  }
+  if($section->vphone){
+    $variables['attributes']['class'][] = 'visible-xs';
+  }
+}
+
+function drupalexp_lite_preprocess_region(&$variables) {
+  $drupalexp = DrupalExp::get();
+  $region_key = $variables['elements']['#region'];
+  
+  $region = $drupalexp->getRegionByKey($region_key);
+  $variables['attributes']['class'][] = 'dexp-region';
+  if ($region) {
+    if($region->colxs){ $variables['attributes']['class'][] = 'col-xs-' . $region->colxs; }
+    if($region->colsm){ $variables['attributes']['class'][] = 'col-sm-' . $region->colsm; }
+    if($region->colmd){ $variables['attributes']['class'][] = 'col-md-' . $region->colmd; }
+    if($region->collg){ $variables['attributes']['class'][] = 'col-lg-' . $region->collg; }
+    if($region->colxl){ $variables['attributes']['class'][] = 'col-xl-' . $region->colxl; }
+		if(isset($region->custom_class)){
+    	$variables['attributes']['class'][] = $region->custom_class;
+		}
+    if(isset($region->colxloffset) && $region->colxloffset){
+      $variables['attributes']['class'][] = 'offset-xl-' . $region->colxloffset;
+    }
+    if(isset($region->collgoffset) && $region->collgoffset){
+      $variables['attributes']['class'][] = 'offset-lg-' . $region->collgoffset;
+    }
+    if(isset($region->colmdoffset) && $region->colmdoffset){
+      $variables['attributes']['class'][] = 'offset-md-' . $region->colmdoffset;
+    }
+    if(isset($region->colsmoffset) && $region->colsmoffset){
+      $variables['attributes']['class'][] = 'offset-sm-' . $region->colsmoffset;
+    }
+    if(isset($region->colxsoffset) && $region->colxsoffset){
+      $variables['attributes']['class'][] = 'offset-xs-' . $region->colxsoffset;
+    }
+  }
+}
+
+function drupalexp_lite_form_system_theme_settings_alter(&$form, &$form_state) {
+  $theme = DrupalExp::get();
+  $form['copyright'] = array(
+    '#markup' => t('<div class="copyright">Develop by <a href="https://www.drupalexp.com" target="_blank">DrupalExp</a></div>'),
+  );
+  $form['drupalexp_lite_theme_settings'] = [
+      '#type' => 'vertical_tabs',
+      '#parents' => ['drupalexp_theme_settings'],
+  ];
+  $form['theme_settings']['#group'] = 'drupalexp_theme_settings';
+  $form['theme_settings']['toggle_page_loading'] = array(
+    '#title' => t('Enable Page Loading'),
+    '#type' => 'checkbox',
+    '#default_value' => $theme->getSetting('features.page_loading',0),
+  );
+  $form['theme_settings']['toggle_goto_top'] = array(
+    '#title' => t('Add go to top button'),
+    '#type' => 'checkbox',
+    '#default_value' => $theme->getSetting('features.goto_top',0),
+  );
+  $form['favicon']['#group'] = 'drupalexp_theme_settings';
+  $form['logo']['#group'] = 'drupalexp_theme_settings';
+  Layout::alterForm($form);
+  
+  $form['drupal_basic_settings'] = array(
+    '#type' => 'details',
+    '#title' => t('Basic'),
+    '#group' => 'drupalexp_theme_settings',
+    '#weight' => 0
+	);
+  
+  $form['drupal_basic_settings']['drupalexp_custom_html_class'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom HTML class'),
+    '#description' =>t('Add custom class to body tag.'),
+    '#default_value' => $theme->getSetting('drupalexp_custom_html_class', ''),
+  );
+  $form['#attached']['library'][] = 'drupalexp_lite/theme-settings';
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function drupalexp_lite_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'drupalexp' && \Drupal::moduleHandler()->moduleExists('libraries')) {
+    if($path = libraries_get_path('bootstrap')){
+      $libraries['bootstrap']['js'] = [
+        'assets/js/jquery.fix.js' => [],
+        'assets/js/popper.min.js' => [],
+        '/' . $path . '/js/bootstrap.min.js' => [],
+      ];
+      $libraries['bootstrap']['css']['base'] = [
+        '/' . $path . '/css/bootstrap.min.css' => [],
+      ];
+    }
+  }
+}
+
+/**
+ * Implement hook_theme_suggestions_HOOK_alter
+ */
+function drupalexp_lite_theme_suggestions_section_alter(array &$suggestions, array &$variables){
+  $suggestions[] = 'section__' . str_replace('-', '_', $variables['section']->key);
+}
+
+function drupalexp_lite_preprocess_input(&$variables) {
+  $element = $variables['element'];
+  //dsm($element['#type']);
+  if(in_array($element['#type'], ['search', 'textfield', 'select', 'entity_autocomplete', 'password', 'date', 'time', 'number', 'tel', 'email'])){
+    $variables['attributes']['class'][] = 'form-control';
+  }
+  if(in_array($element['#type'], ['submit', 'button'])){
+    $variables['attributes']['class'][] = 'btn';
+    if(isset($element['#button_type']) && $element['#button_type'] == 'primary'){
+      $variables['attributes']['class'][] = 'btn-primary';
+    }elseif (isset($element['#value'])) {
+      $classes = array(
+        'Save' => 'btn-primary',
+        'Apply' => 'btn-primary',
+        'Submit' => 'btn-primary',
+        'Search' => 'btn-primary',
+        'Log in' => 'btn-primary',
+        'Save and publish' => 'btn-primary',
+        'Preview' => 'btn-info',
+        'Delete' => 'btn-danger',
+      );
+      foreach ($classes as $search => $class) {
+        $value = is_object($element['#value'])?$element['#value']->__toString():$element['#value'];
+        if (strpos($element['#value'], $search) !== FALSE) {
+          $variables['attributes']['class'][] = $class;
+          break;
+        }
+        $variables['attributes']['class'][] = 'btn-default';
+      }
+    }
+  } 
+}
+
+function drupalexp_lite_preprocess_select(&$variables) {
+  $variables['attributes']['class'][] = 'form-control';
+}
+
+function drupalexp_lite_preprocess_textarea(&$variables) {
+  $variables['attributes']['class'][] = 'form-control';
+}
+
+function drupalexp_lite_preprocess_table(&$variables) {
+  $variables['attributes']['class'][] = 'table';
+}

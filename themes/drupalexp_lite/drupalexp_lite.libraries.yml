@@ -1,0 +1,46 @@
+base:
+  version: 8.x-1.0
+  js:
+    assets/js/drupalexp.js: {}
+  css:
+    base:
+      assets/css/style.css: {}
+bootstrap:
+  version: 4.x
+  css:
+    base:
+      vendor/bootstrap/css/bootstrap.min.css: {}
+  js:
+    assets/js/jquery.fix.js: {}
+    assets/js/popper.min.js: {}
+    vendor/bootstrap/js/bootstrap.min.js: {}
+  dependencies:
+    - core/jquery
+font-awesome:
+  version:  4.4.0
+  css:
+    base:
+      vendor/font-awesome/css/font-awesome.min.css: {}
+sticky:
+  version: 8.x-1.0
+  js:
+    assets/js/sticky.js: {}
+  dependencies:
+    - drupalexp/bootstrap
+    - core/jquery
+    - core/drupal
+theme-settings:
+  version: 1.x
+  js:
+    assets/js/layout.js: {}
+  dependencies:
+  - core/jquery
+  - core/jquery.once
+  - core/jquery.ui.sortable
+  - core/jquery.ui.dialog
+  - core/drupal.dialog
+  css:
+    component:
+      vendor/font-awesome/css/font-awesome.css: {}
+      assets/css/bootstrap-grid.min.css: {}
+      assets/css/admin.style.css: {}

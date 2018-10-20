@@ -1,0 +1,7 @@
+{% if content %}
+  <div{{ attributes }}>
+    <div{{ attributes_container.addClass(container_class) }}>
+      <div{{ attributes_row.addClass('row') }}>{{ content }}</div>
+    </div>
+  </div>
+{% endif %}

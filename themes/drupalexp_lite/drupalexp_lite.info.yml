@@ -1,0 +1,28 @@
+name: DrupalExp Lite
+type: theme
+description: Drag and Drop Layout Builder base on Bootstrap 4
+base theme: classy
+# core: 8.x
+# version: 8.x-1.0
+stylesheets-remove:
+  - '@classy/css/components/dialog.css'
+  - core/assets/vendor/jquery.ui/themes/base/dialog.css
+  
+libraries:
+  - drupalexp_lite/base
+  
+regions:
+  logo: Logo
+  navigation: Navigation
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer_first: 'Footer first'
+  footer_second: 'Footer second'
+  footer_third: 'Footer third'
+  footer_fourth: 'Footer fourth'
+# Information added by Drupal.org packaging script on 2017-10-24
+version: '8.x-1.0'
+core: '8.x'
+project: 'drupalexp_lite'
+datestamp: 1508810946

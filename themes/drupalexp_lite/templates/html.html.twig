@@ -1,0 +1,48 @@
+{%
+  set body_classes = [
+    body_class,
+    logged_in ? 'user-logged-in',
+    not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+    node_type ? 'page-node-type-' ~ node_type|clean_class,
+    db_offline ? 'db-offline',
+  ]
+%}
+
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1">
+		<head-placeholder token="{{ placeholder_token }}">
+		<title>{{ head_title|safe_join(' | ') }}</title>
+        <css-placeholder token="{{ placeholder_token }}">
+        <js-placeholder token="{{ placeholder_token }}">
+	</head>
+    <body{{ attributes.addClass(body_classes) }}>
+    {% if page_loading %}
+    <div id="dexp-loader">
+      <div class="loader">
+        <div style="position: absolute;left: 50%;top: 50%;-webkit-transform: translateX(-50%) translateY(-50%);-moz-transform: translateX(-50%) translateY(-50%);-o-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);">
+          <p class="sencond-font text-center">Please Wait...</p>
+          <div class="loading">
+            <div class="ball"></div>
+            <div class="ball"></div>
+            <div class="ball"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+		<div id="skip-link">
+      <a href="#main-content" class="visually-hidden focusable">
+        {{ 'Skip to main content'|t }}
+      </a>
+		</div>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+    {% if goto_top %}  
+      <div id="go-to-top"><i class="fa fa-arrow-up"></i></div>
+    {% endif %}
+	</body>
+</html>

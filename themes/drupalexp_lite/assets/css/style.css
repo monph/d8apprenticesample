@@ -1,0 +1,26 @@
+.dexp-body-inner{
+  
+}
+.dexp-sticky{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+#section-header{
+  padding: 20px 0;
+}
+.region-navigation ul.menu{
+  margin: 0;
+  text-align: right;
+}
+.region-navigation ul.menu li.menu-item{
+  padding-top: 0;
+  display: inline-block;
+  margin-left: 30px;
+}
+.region-navigation ul.menu li.menu-item a{
+  padding-top: 0;
+  display: inline-block;
+  line-height: 41px;
+}
