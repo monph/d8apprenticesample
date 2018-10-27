@@ -101,7 +101,7 @@ function employee_schema(&$schema) {
 /**
  * Created new employee-test table.
  */
-function employee_update_8001(&$schema) {
+function employee_update_8002(&$schema) {
   $schema['employee-test'] = [
     'description' => 'Stores example person entries for demonstration purposes.',
     'fields' => [
