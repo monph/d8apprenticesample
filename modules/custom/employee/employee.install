@@ -99,7 +99,7 @@ function employee_schema() {
 }
 
 /**
- * Implements hook_update_N().
+ * Created new employee-test table.
  */
 function employee_update_8001() {
   $schema['employee-test'] = [
