@@ -50,7 +50,7 @@ function employee_install() {
  *
  * @ingroup employee
  */
-function employee_schema() {
+function employee_schema(&$schema) {
   $schema['employee'] = [
     'description' => 'Stores example person entries for demonstration purposes.',
     'fields' => [
