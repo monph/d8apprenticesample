@@ -72,7 +72,8 @@ class EmployeeForm extends FormBase {
         'lastname' => $field['lastname'],
         'age' => $field['age']
       );
-
+      // kint($employee_information);
+      // exit();
       $query = \Drupal::database();
       $query ->insert('employee')
           ->fields($employee_information)

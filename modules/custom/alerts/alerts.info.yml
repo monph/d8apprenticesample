@@ -1,0 +1,5 @@
+name: Alerts Registration
+type: module
+description: 'Custom alerts registration module'
+core: 8.x
+package: 'Drupal Apprentice'
